@@ -1,0 +1,121 @@
+1.NETWORKING 
+1)
+import java.io.*;//1 Balkhash Amina
+import java.net.*;
+
+public class Client { 
+    public static void main(String[] args) throws IOException {
+        Socket socket = new Socket("localhost", 1605);
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+        System.out.println("Connected to the server!");
+        while (true) {
+            System.out.println("Enter a shape (Circle/Rectangle) or 'Q' to exit:");
+            String shape = input.readLine();
+            out.println(shape);
+
+            if (shape.equalsIgnoreCase("Q")) break;
+
+            if (shape.equalsIgnoreCase("Circle")) {
+                System.out.println("Enter the radius:");
+            } else if (shape.equalsIgnoreCase("Rectangle")) {
+                System.out.println("Enter the length and width separated by a space:");
+            }
+            out.println(input.readLine());
+
+            String response = in.readLine();
+            System.out.println("Square: " + response);
+        }
+
+2)
+import java.io.*; //1 Balkhash Amina
+import java.net.*;
+
+public class Server {
+    public static void main(String[] args) throws IOException {
+        ServerSocket server = new ServerSocket(1605);
+        System.out.println("The server is running. Waiting for the client...");
+        Socket client = server.accept();
+        BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        PrintWriter out = new PrintWriter(client.getOutputStream(), true);
+
+        System.out.println("The client is connected!");
+        while (true) {
+            String shape = in.readLine();
+            if (shape.equalsIgnoreCase("Q")) break;
+
+            String params = in.readLine();
+            double area = 0;
+
+            if (shape.equalsIgnoreCase("Circle")) {
+                double radius = Double.parseDouble(params);
+                area = Math.PI * radius * radius;
+            } else if (shape.equalsIgnoreCase("Rectangle")) {
+                String[] dimensions = params.split(" ");
+                double length = Double.parseDouble(dimensions[0]);
+                double width = Double.parseDouble(dimensions[1]);
+                area = length * width;
+            }
+
+            out.println(area);
+        }
+
+        client.close();
+        server.close();
+        System.out.println("Server stopped.");
+    }
+}
+        socket.close();
+        System.out.println("The connection is closed.");
+    }
+}
+
+2.THREADS
+import java.util.ArrayList; //2 Balkhash Amina
+
+class Student {
+    private String name;
+    private int age;
+    private int id;
+
+    public Student(String name, int age, int id) {
+        this.name = name;
+        this.age = age;
+        this.id = id;
+    }
+
+    public String toString() {
+        return "Student ID: " + id + ", Name: " + name + ", Age: " + age;
+    }
+}
+
+public class list_of_students {
+    public static void main(String[] args) {
+        ArrayList<Student> students = new ArrayList<>();
+
+        students.add(new Student("Anelya", 18, 1));
+        students.add(new Student("Dana", 19, 2));
+        students.add(new Student("Albina", 19, 3));
+
+        System.out.println("List of students:");
+        for (Student student : students) {
+            System.out.println(student);
+        }
+
+        students.remove(1);
+        System.out.println("\nAfter removing a student from ID 2:");
+
+        for (Student student : students) {
+            System.out.println(student);
+        }
+
+        students.add(new Student("Amina", 18, 4));
+        System.out.println("\nAfter adding a new student:");
+
+        for (Student student : students) {
+            System.out.println(student);
+        }
+    }
+}
